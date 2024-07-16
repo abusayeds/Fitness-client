@@ -24,7 +24,7 @@ const Homepage = () => {
         className="bg-cover bg-center h-screen flex flex-col justify-center items-center"
         style={{ backgroundImage: `url(${backgroundImageUrl})` }}
       >
-        <div className="bg-black bg-opacity-50 text-white text-center px-4 md:px-8 py-8 rounded-md">
+        <div className=" bg-opacity-50 text-white text-center px-4 md:px-8 py-8 rounded-md">
           <h1 className="text-4xl md:text-6xl font-bold mb-4">
             Welcome to Our Fitness Zone
           </h1>

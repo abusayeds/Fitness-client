@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NavLink } from "react-router-dom";
 import { useDeleteProductMutation, useProductManagemebQuery } from "../redux/features/productManagementPage/productManagementApi";
 import { useAppDispatch } from "../redux/hooks";
@@ -18,7 +19,7 @@ const ProductManagement = () => {
         <p className="p-5 w-auto font-bold hover:text-slate-700  ">
         <NavLink to= '/add-new-product' >Add new product</NavLink>
         </p>
-      {products?.data?.map((product) => (
+      {products?.data?.map((product : any) => (
         <div
           key={product._id}
           className="md:flex items-center   justify-between px-5 gap-4 mb-2 rounded bg-slate-100 p-3 "

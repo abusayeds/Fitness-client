@@ -107,7 +107,10 @@ const ProductsPage = () => {
 
         {/* Category Filters */}
         <div className="mt-2">
-          <h3 className=" font-semibold text-slate-700">Categories</h3>
+         {
+            filltercategory.length === 0 ? <p className="mt-40">Product dose found !!</p>
+            : <div>
+                 <h3 className=" font-semibold text-slate-700">Categories</h3>
           {filltercategory.map((category) => (
             <div className="mt-2" key={category}>
               <input
@@ -119,9 +122,11 @@ const ProductsPage = () => {
               <label className="ml-2">{category}</label>
             </div>
           ))}
+            </div>
+         }
         </div>
 
-        {/* Price Range Filter */}
+    
         <div>
           <h3 className=" font-semibold text-slate-700">Price Range $</h3>
           <label className="flex gap-2 my-1 ml-5 ">
@@ -144,7 +149,7 @@ const ProductsPage = () => {
           </label>
         </div>
 
-        {/* Sort Options */}
+   
         <div>
           <h3 className=" font-semibold text-slate-700">Sort By</h3>
           <select
@@ -158,7 +163,6 @@ const ProductsPage = () => {
           </select>
         </div>
 
-        {/* Clear Filters Button */}
         <button
           className="bg-red-500 w-full mt-5 p-1 rounded-md text-white hover:font-bold hover:bg-red-600"
           onClick={clearFilters}

@@ -42,7 +42,7 @@ const MainLayout = () => {
 
       <div
         className={` bg-black  absolute h-screen w-screen text-amber-300  duration-500 ${
-          open ? " top-0" : "top-[-700px]"
+          open ? " top-0" : "top-[-1000px]"
         }`}
       >
         <div className="grid grid-rows-5 md:hidden justify-center items-center h-full">

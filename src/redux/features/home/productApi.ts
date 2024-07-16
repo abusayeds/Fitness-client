@@ -6,16 +6,19 @@ const ProductApi = baseApi.injectEndpoints({
            query : () => ({
             url : "category/get-category",
             method : 'GET',
-         
-           })
+           
+           }),
+           providesTags : ['refatch']
         }),
         fewProduct : builder.query({
            query : () => ({
             url : "products/all-products?limit=4",
             method : 'GET',
          
-           })
+           }),
+           providesTags : ['refatch']
         })
+       
     }),
    
 })

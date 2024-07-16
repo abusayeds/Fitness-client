@@ -1,18 +1,18 @@
 import { createSlice, PayloadAction, } from "@reduxjs/toolkit";
 
 const initialState = {
-    products : ''
+    singleProduct : ''
 }
 
 const productSlice = createSlice({
     name : 'product',
     initialState,
     reducers : {
-    category : (state, action : PayloadAction<string> ) => {
-        state.products = action.payload
+     singleProductId : (state, action : PayloadAction<string> ) => {
+        state.singleProduct = action.payload
     },
     
    }
 })
- export const {category, } = productSlice.actions
+ export const {singleProductId} = productSlice.actions
 export default productSlice.reducer

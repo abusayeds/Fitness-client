@@ -9,7 +9,7 @@ import { faBars, faX } from "@fortawesome/free-solid-svg-icons";
 const MainLayout = () => {
   const [open, setOpen] = useState(false);
   return (
-    <header className=" fixed top-0 bg-slate-800 text-white w-full md:py-4 md:px-10  ">
+    <header className=" fixed top-0 z-50 bg-slate-800 text-white w-full md:py-4 md:px-10  ">
       <main className="flex justify-between p-5 ">
         <div className="flex gap-3 ">
           <p className=" font-semibold">Fitness zone</p>
@@ -34,7 +34,7 @@ const MainLayout = () => {
         </div>
         <div className=" md:flex hidden space-x-10">
           {headerPaths.map((item) => (
-            <NavLink key={item.name} to={`${item.path}`}>{item.name}</NavLink>
+            <NavLink className= " text-sm font-titlefont" key={item.name} to={`${item.path}`}>{item.name}</NavLink>
           ))}
         </div>
       </main>
@@ -47,7 +47,7 @@ const MainLayout = () => {
       >
         <div className="grid grid-rows-5 md:hidden justify-center items-center h-full">
         {headerPaths.map((item) => (
-          <NavLink key={item.name} onClick={() => setOpen(!open)} to={`${item.path}`}>{item.name}</NavLink>
+          <NavLink className= " text-sm font-titlefont" key={item.name} onClick={() => setOpen(!open)} to={`${item.path}`}>{item.name}</NavLink>
         ))}
         </div>
       <p onClick={() => setOpen(!open)} className=" text-red-400 hover:text-red-500 text-3xl mr-5 font-semibold absolute top-0 right-0">x</p>

@@ -6,6 +6,7 @@ import {
 } from "../redux/features/home/productApi";
 import { useAppDispatch } from "../redux/hooks";
 import { category } from "../redux/features/home/productSlice";
+import BenefitPage from "./BenefitPage";
 
 const Homepage = () => {
   const dispatch = useAppDispatch();
@@ -19,16 +20,16 @@ const Homepage = () => {
   }
 
   return (
-    <main className="mt-20">
+    <main className="mt-20 w-full">
       <div
         className="bg-cover bg-center h-screen flex flex-col justify-center items-center"
         style={{ backgroundImage: `url(${backgroundImageUrl})` }}
       >
         <div className=" bg-opacity-50 text-white text-center px-4 md:px-8 py-8 rounded-md">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">
+          <h1 className="text-4xl md:text-6xl font-bodyfont font-bold mb-4">
             Welcome to Our Fitness Zone
           </h1>
-          <p className="text-lg md:text-2xl mb-8">
+          <p className="text-lg md:text-2xl  font-titlefont mb-8">
             Achieve your fitness goals with personalized plans and expert
             guidance.
           </p>
@@ -37,9 +38,11 @@ const Homepage = () => {
           </button>
         </div>
       </div>
-      <p className="text-center mt-20 text-3xl font-bold">Category Product in hear !!! </p>
+      <p className="md:text-4xl text-center font-titlefont">
+        Category Product in hear !!!{" "}
+      </p>
 
-      <div className="md:flex md:justify-around flex-1 justify-center items-center   mt-20">
+      <div className="  grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6 px-4  justify-center items-center">
         {products?.data?.map((item: any) => (
           <NavLink
             onClick={() => dispatch(category(item.category))}
@@ -57,9 +60,11 @@ const Homepage = () => {
           </NavLink>
         ))}
       </div>
-              <p className="text-center mt-20 text-3xl font-bold">Few Products in hear !!! </p>
+      <p className="md:text-4xl text-center py-10 font-titlefont ">
+        Few Products in hear !!!{" "}
+      </p>
 
-            <div className="md:flex md:justify-around flex-1 justify-center items-center   mt-5">
+      <div className=" grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6 px-4  justify-center items-center">
         {fewproducts?.data?.map((item: any) => (
           <div>
             <img
@@ -81,6 +86,10 @@ const Homepage = () => {
           Expoler more ...
         </NavLink>
       </p>
+      <p className="mx-5 md:text-4xl text-center font-titlefont">
+        Benefits of a Healthy Lifestyle
+      </p>
+      <BenefitPage></BenefitPage>
     </main>
   );
 };

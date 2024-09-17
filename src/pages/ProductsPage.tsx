@@ -88,7 +88,8 @@ const ProductsPage = () => {
     });
 
   return (
-    <div className="md:flex py-40 p-2 ">
+    <div className="md:flex my-40 md:p-6 p-3 ">
+        
       <div className=" md:w-96 bg-slate-00 px-4  ">
         <div className="flex justify-center items-center border rounded-lg">
           <input
@@ -112,7 +113,7 @@ const ProductsPage = () => {
             : <div>
                  <h3 className=" font-semibold text-slate-700">Categories</h3>
           {filltercategory.map((category) => (
-            <div className="mt-2" key={category}>
+            <div className="mt-2 font-titlefont" key={category}>
               <input
                 className=" ml-5"
                 type="checkbox"
@@ -132,7 +133,7 @@ const ProductsPage = () => {
           <label className="flex gap-2 my-1 ml-5 ">
             <span> Min Price: </span>
             <input
-              className=" outline-0 border px-1 w-28 rounded "
+              className=" font-titlefont outline-0 border px-1 w-28 rounded "
               type="number"
               defaultValue={0}
               onChange={(e) => handlePriceRangeChange(e, 0)}
@@ -141,7 +142,7 @@ const ProductsPage = () => {
           <label className="flex gap-2 ml-5">
             <span>Max price</span>
             <input
-              className=" outline-0 border px-1 w-28 rounded my-1"
+              className=" font-titlefont outline-0 border px-1 w-28 rounded my-1"
               type="number"
               defaultValue={10999}
               onChange={(e) => handlePriceRangeChange(e, 1)}
@@ -171,19 +172,19 @@ const ProductsPage = () => {
         </button>
       </div>
 
-      <div className="md:w-full grid grid-cols-2 justify-center items-center  gap-5 mt-4">
+      <div className="grid  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3  px-4  justify-center items-center gap-5 mt-4">
         {filteredProducts.map((item: Product) => (
           <div
-            className="bg-slate-50 w-full h-full border "
+            className="bg-slate-50 w-full h-full border relative "
             key={item._id}
           >
             <img
-              className="md:h-96 h-52 w-full"
+              className="md:h-75 h-52 w-full"
               src={item.images}
               alt={item.name}
             />
             <div className="p-2 md:p-3">
-              <p className="text-slate-700 text-xl my-2">{item.name}</p>
+              <p className="text-slate-700 font-titlefont text-xl my-2">{item.name}</p>
               <small className="text-xxl">
                 Starting at $178/mo or 0% APR with affirm. See if you qualify
               </small>
@@ -194,7 +195,7 @@ const ProductsPage = () => {
               </span>
               <p>${item.price}</p>
             </div>
-            <p onClick={() => dispatch(singleProductId(item._id))} className="text-center bg-green-500  bottom-0 w-full mt- p-1  text-white hover:font-bold hover:bg-red-600-"><NavLink to= '/product-details'>view details</NavLink></p>
+            <p onClick={() => dispatch(singleProductId(item._id))} className="text-center duration-500 absolute bg-green-500  bottom-0 w-full mt- p-1  text-white hover:font-bold hover:bg-red-600-"><NavLink to= '/product-details'>view details</NavLink></p>
           </div>
         ))}
       </div>

@@ -4,12 +4,12 @@ import Footer from "./pages/Footer";
 
 function App() {
   return (
-    <div>
+    <div >
       <MainLayout></MainLayout>
-       <div>
-       <Outlet></Outlet>
-       </div>
-   <Footer></Footer>
+      <div >
+        <Outlet></Outlet>
+      </div>
+      <Footer></Footer>
     </div>
   );
 }

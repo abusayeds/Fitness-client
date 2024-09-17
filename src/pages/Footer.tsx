@@ -1,63 +1,130 @@
-import { faFacebookF, faGithub, faLinkedinIn, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { FaFacebook, FaLinkedin, FaWhatsapp } from "react-icons/fa";
+import { IoIosArrowForward } from "react-icons/io";
+import { category } from "../redux/features/home/productSlice";
+import { BsGithub } from "react-icons/bs";
+import { NavLink } from "react-router-dom";
+import { useProductQuery } from "../redux/features/home/productApi";
+import { useAppDispatch } from "../redux/hooks";
 
 const Footer = () => {
+    const dispatch = useAppDispatch();
+  const { data: products } = useProductQuery(undefined);
   return (
-    <div>
-      <footer className="bg-gray-800 text-white py-8">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="flex flex-wrap justify-between items-center mb-4">
-            <div className="flex items-center space-x-4">
-            <img
-            className="w-6 h-6 rounded-full"
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkooLRLnw6KYliBKMSdCBPO1yyLH-ELhCTuw&s"
-            alt=""
-          />
-              <p className="text-white">
-                © 2024 . Privacy Policy
-              </p>
+    <main className=" bg-black opacity-90  font-titlefont md:px-16 p-6 text-gray-400 tracking-wide py-20">
+      <div className="max-w-7xl mx-auto">
+        <div className=" w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 ">
+          <div className="mb-5 flex flex-col gap-4  ">
+            <p className="  font-semibold text-white  font-serif">Our Self</p>
+            <div className="flex flex-col gap-2 ">
+              <p className="tracking-wide">Car servise</p>
+              <p className=" tracking-wide uppercase">Dhaka uttora / C10</p>
             </div>
-
-            <div className=' mt-2 flex '  >
-                    <h1 className=' text-3xl hover:text-blue-600 ' ><a href="https://www.facebook.com/profile.php?id=100074503997052" target="_blank" rel="noopener noreferrer"> <FontAwesomeIcon className='icon ' icon= {faFacebookF}  ></FontAwesomeIcon></a></h1>
-                    <h1 className='ml-6 text-3xl hover:text-blue-600 '><a href="https://github.com/abusayeds" target="_blank" rel="noopener noreferrer"> <FontAwesomeIcon className=' icon' icon= {faGithub}  ></FontAwesomeIcon></a></h1>
-                    <h1 className='ml-6 text-3xl hover:text-blue-600 '><a href="https://www.linkedin.com/in/abu-sayed96/" target="_blank" rel="noopener noreferrer"> <FontAwesomeIcon className=' icon' icon= {faLinkedinIn}  ></FontAwesomeIcon></a></h1>
-                    <h1 className='ml-6 text-3xl hover:text-blue-600 '> <FontAwesomeIcon className='icon' icon= {faWhatsapp} /> </h1>
-                </div>
+            <div className="flex flex-col gap-2 tracking-wide">
+              <p>Phone : (+088) 1843425697</p>
+              <p>Email : carservice@gmail.com</p>
+            </div>
           </div>
 
-          <div className="mb-4">
-            <p className="text-white mb-2">Contact us : abusayedstudent@gmail.com</p>
-            <p className="text-white">Uttora , Dhaka , Bangladesh</p>
+          <div className="mb-5 flex flex-col gap-4 ">
+            <p className="  font-semibold text-white font-serif">
+              Useful Links
+            </p>
+            <NavLink
+              to="/"
+              className=" flex items-center text-base font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300"
+            >
+              Home
+            </NavLink>
+            <NavLink
+              to="/product-page"
+              className=" flex items-center text-base font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300"
+            >
+              All Product
+            </NavLink>
+            <NavLink
+              to="/cart-page"
+              className=" flex items-center text-base font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300"
+            >
+              Cart
+            </NavLink>
+            <NavLink
+              to="product-management"
+              className=" flex items-center text-base font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300"
+            >
+              Product-management
+            </NavLink>
+            <NavLink
+              to="/about-page"
+              className=" flex items-center text-base font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300"
+            >
+              About Us
+            </NavLink>
           </div>
-
-          <div className="flex space-x-4 mb-4">
-            <a href="#" className="text-white hover:text-gray-400">
-              <i className="fab fa-facebook-square text-2xl"></i>
-              
-            </a>
-            <a href="#" className="text-white hover:text-gray-400">
-              <i className="fab fa-twitter-square text-2xl"></i>
-            </a>
-            <a href="#" className="text-white hover:text-gray-400">
-              <i className="fab fa-instagram-square text-2xl"></i>
-            </a>
+          <div className="mb-5 flex flex-col gap-4 ">
+            <p className="  font-semibold text-white font-serif">Category</p>
+            <div className=" flex flex-col gap-2">
+              {products?.data?.map((item: any) => (
+                <NavLink
+                  onClick={() => dispatch(category(item.category))}
+                  to="/product-page"
+                  key={item._id}
+                >
+                  
+                 <p className=" text-base font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300">
+                 {item.category}
+                </p>
+                </NavLink>
+              ))}
+           
+             
+             
+            </div>
           </div>
+          <div className="mb-5 flex flex-col gap-4 ">
+            <p className="font-semibold text-white font-serif">Get in Touch</p>
 
-          <div>
-            <a href="#" className="text-white hover:text-gray-400">
-             Location
-            </a>
-            <span className="text-gray-600 mx-2">•</span>
-            <a href="#" className="text-white hover:text-gray-400">
-              Dhaka 
-            </a>
+            <div>
+              <p>
+                A car service typically includes inspections, maintenance and/or
+                repairs to ensure that your car is running safely and
+                efficiently
+              </p>
+              <div className="flex gap-8 mt-5">
+                <a
+                  className=" hover:text-red-600 text-2xl duration-500"
+                  href="https://www.facebook.com/profile.php?id=100074503997052"
+                  target="_blank "
+                >
+                  <FaFacebook />
+                </a>
+                <a
+                  className=" hover:text-red-600 text-2xl duration-500"
+                  href=""
+                  target="_blank "
+                >
+                  <BsGithub />
+                </a>
+                <a
+                  className=" hover:text-red-600 text-2xl duration-500"
+                  href=""
+                  target="_blank "
+                >
+                  <FaWhatsapp />
+                </a>
+                <a
+                  className=" hover:text-red-600 text-2xl duration-500"
+                  href="https://www.linkedin.com/in/abu-sayed96/"
+                  target="_blank "
+                >
+                  <FaLinkedin />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
-        <p className='text-center'>Create by <FontAwesomeIcon className='text-yellow-400' icon={faHeart}></FontAwesomeIcon> Abu sayed (copyright @2024))</p>
-      </footer>
-    </div>
+      </div>
+    </main>
   );
 };
 

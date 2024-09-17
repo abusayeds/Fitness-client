@@ -1,1 +1,2 @@
 My project is about a physical fit related Projects . The projects of mine up of different activities of plysical exercise . A  user can collect and order various exercise materials by useging this project . And search and category fields are set to find different materials . A Products page created to manage or update products 
+A user can display the card page to view the products he has ordered and can delete the products .

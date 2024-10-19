@@ -2,7 +2,7 @@
 import { NavLink } from "react-router-dom";
 import {
   useFewProductQuery,
-  useProductQuery,
+  useCategoryProductQuery,
 } from "../redux/features/home/productApi";
 import { useAppDispatch } from "../redux/hooks";
 import { category } from "../redux/features/home/productSlice";
@@ -10,10 +10,10 @@ import BenefitPage from "./BenefitPage";
 
 const Homepage = () => {
   const dispatch = useAppDispatch();
-  const { data: products, isLoading } = useProductQuery(undefined);
+  const { data: products, isLoading } = useCategoryProductQuery(undefined);
   const { data: fewproducts } = useFewProductQuery(undefined);
   const backgroundImageUrl =
-    "https://shop.lifefitness.com/cdn/shop/files/HOMEPAGE_clubseriesplus-cardio_021224.jpg?v=1707766353&width=1400";
+    "https://www.northernfitness.ca/cdn/shop/files/image-4.jpg?v=1727970176&width=1920";
 
   if (isLoading) {
     return <p>Loading...</p>;

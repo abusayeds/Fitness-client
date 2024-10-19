@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FaFacebook, FaLinkedin, FaWhatsapp } from "react-icons/fa";
-import { IoIosArrowForward } from "react-icons/io";
+
 import { category } from "../redux/features/home/productSlice";
 import { BsGithub } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
-import { useProductQuery } from "../redux/features/home/productApi";
+import { useCategoryProductQuery } from "../redux/features/home/productApi";
 import { useAppDispatch } from "../redux/hooks";
 
 const Footer = () => {
-    const dispatch = useAppDispatch();
-  const { data: products } = useProductQuery(undefined);
+  const dispatch = useAppDispatch();
+  const { data: products } = useCategoryProductQuery(undefined);
   return (
     <main className=" bg-black opacity-90  font-titlefont md:px-16 p-6 text-gray-400 tracking-wide py-20">
       <div className="max-w-7xl mx-auto">
@@ -70,15 +70,11 @@ const Footer = () => {
                   to="/product-page"
                   key={item._id}
                 >
-                  
-                 <p className=" text-base font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300">
-                 {item.category}
-                </p>
+                  <p className=" text-base font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300">
+                    {item.category}
+                  </p>
                 </NavLink>
               ))}
-           
-             
-             
             </div>
           </div>
           <div className="mb-5 flex flex-col gap-4 ">

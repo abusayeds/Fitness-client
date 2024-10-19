@@ -1,5 +1,5 @@
-import { useAppSelector } from "../redux/hooks"
+import { useAppSelector } from "../redux/hooks";
 
-export const usecategory = () => {
- useAppSelector((state) => state.products.products)
-}
+export const Usecategory = () => {
+  useAppSelector((state) => state.products.products);
+};

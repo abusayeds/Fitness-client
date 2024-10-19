@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-
-
-import{ useEffect } from "react";
+import { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
 import {
   decrementQuantity,
@@ -56,8 +54,7 @@ const CartPage = () => {
   const isCheckoutDisabled = products.some((item) => item.stock === 0);
 
   return (
-    <div className="mt-40 flex justify-center  ">
-    
+    <div className="mt-40 flex justify-center ">
       <div>
         {products.map((item) => (
           <div
@@ -100,35 +97,47 @@ const CartPage = () => {
           </div>
         ))}
 
-        {
-            products.length ? <div className="flex justify-between items-center mt-5">
-            <div  className="flex items-center gap-5">
-            <p className=" text-xl font-semibold text-slate-700">Total Price: </p>
-            <p>{totalPrice.toFixed(2)} $</p>
+        {products.length ? (
+          <div className="flex justify-between items-center mt-5">
+            <div className="flex items-center gap-5">
+              <p className=" text-xl font-semibold text-slate-700">
+                Total Price:{" "}
+              </p>
+              <p>{totalPrice.toFixed(2)} $</p>
             </div>
-  
+
             <button
-            className=" bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+              className=" bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
               onClick={() => console.log("Proceeding to checkout")}
               disabled={isCheckoutDisabled}
             >
               <NavLink to="/checkout-page"> Proceed to Checkout</NavLink>
             </button>
           </div>
-          :   <div className="flex items-center justify-center h-52">
-                 
-          <div>
+        ) : (
+          <div className="flex items-center justify-center h-52">
+            <div>
               <div className="flex items-center justify-center ">
-               <p className="text-4xl bg-blue-200 text-blue-500 rounded-full px-6 py-5"><FontAwesomeIcon icon={faBagShopping}></FontAwesomeIcon></p>    
+                <p className="text-4xl bg-blue-200 text-blue-500 rounded-full px-6 py-5">
+                  <FontAwesomeIcon icon={faBagShopping}></FontAwesomeIcon>
+                </p>
               </div>
               <div className="text-center md:w-5/6 m-auto">
-              <p className="text-2xl md:font-semibold">Opps !!! Your cart is empty</p>    
-             <p>No items added in your cart. Please add product to your cart list. <Link to='/' className="text-blue-500"> Back to Home</Link></p> 
-               </div>   
+                <p className="text-2xl md:font-semibold">
+                  Opps !!! Your cart is empty
+                </p>
+                <p>
+                  No items added in your cart. Please add product to your cart
+                  list.{" "}
+                  <Link to="/" className="text-blue-500">
+                    {" "}
+                    Back to Home
+                  </Link>
+                </p>
+              </div>
+            </div>
           </div>
-
-       </div>
-        }
+        )}
       </div>
     </div>
   );

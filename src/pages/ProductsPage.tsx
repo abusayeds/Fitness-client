@@ -4,9 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useProductPageQuery } from "../redux/features/productPage/productPageApi";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { singleProductId } from "../redux/features/productDetailsPage/productdetailspageSlice";
-
 
 interface Product {
   _id: string;
@@ -17,6 +16,9 @@ interface Product {
 }
 
 const ProductsPage = () => {
+  const location = useLocation();
+  const { category: categoeise } = location.state || {};
+  console.log(categoeise);
   const filltercategory = [
     "TREADMILLS",
     "STRENGTH",
@@ -27,7 +29,7 @@ const ProductsPage = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [sortOption, setSortOption] = useState<string>("");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const category = useAppSelector((state: any) => state.products.products);
   const { data, isLoading } = useProductPageQuery(category);
 
@@ -89,7 +91,6 @@ const ProductsPage = () => {
 
   return (
     <div className="md:flex my-40 md:p-6 p-3 ">
-        
       <div className=" md:w-96 bg-slate-00 px-4  ">
         <div className="flex justify-center items-center border rounded-lg">
           <input
@@ -108,26 +109,26 @@ const ProductsPage = () => {
 
         {/* Category Filters */}
         <div className="mt-2">
-         {
-            filltercategory.length === 0 ? <p className="mt-40">Product dose found !!</p>
-            : <div>
-                 <h3 className=" font-semibold text-slate-700">Categories</h3>
-          {filltercategory.map((category) => (
-            <div className="mt-2 font-titlefont" key={category}>
-              <input
-                className=" ml-5"
-                type="checkbox"
-                checked={selectedCategories.includes(category)}
-                onChange={() => handleCategoryChange(category)}
-              />
-              <label className="ml-2">{category}</label>
+          {filltercategory.length === 0 ? (
+            <p className="mt-40">Product dose found !!</p>
+          ) : (
+            <div>
+              <h3 className=" font-semibold text-slate-700">Categories</h3>
+              {filltercategory.map((category) => (
+                <div className="mt-2 font-titlefont" key={category}>
+                  <input
+                    className=" ml-5"
+                    type="checkbox"
+                    checked={selectedCategories.includes(category)}
+                    onChange={() => handleCategoryChange(category)}
+                  />
+                  <label className="ml-2">{category}</label>
+                </div>
+              ))}
             </div>
-          ))}
-            </div>
-         }
+          )}
         </div>
 
-    
         <div>
           <h3 className=" font-semibold text-slate-700">Price Range $</h3>
           <label className="flex gap-2 my-1 ml-5 ">
@@ -150,7 +151,6 @@ const ProductsPage = () => {
           </label>
         </div>
 
-   
         <div>
           <h3 className=" font-semibold text-slate-700">Sort By</h3>
           <select
@@ -184,7 +184,9 @@ const ProductsPage = () => {
               alt={item.name}
             />
             <div className="p-2 md:p-3">
-              <p className="text-slate-700 font-titlefont text-xl my-2">{item.name}</p>
+              <p className="text-slate-700 font-titlefont text-xl my-2">
+                {item.name}
+              </p>
               <small className="text-xxl">
                 Starting at $178/mo or 0% APR with affirm. See if you qualify
               </small>
@@ -195,7 +197,12 @@ const ProductsPage = () => {
               </span>
               <p>${item.price}</p>
             </div>
-            <p onClick={() => dispatch(singleProductId(item._id))} className="text-center duration-500 absolute bg-green-500  bottom-0 w-full mt- p-1  text-white hover:font-bold hover:bg-red-600-"><NavLink to= '/product-details'>view details</NavLink></p>
+            <p
+              onClick={() => dispatch(singleProductId(item._id))}
+              className="text-center duration-500 absolute bg-green-500  bottom-0 w-full mt- p-1  text-white hover:font-bold hover:bg-red-600-"
+            >
+              <NavLink to="/product-details">view details</NavLink>
+            </p>
           </div>
         ))}
       </div>

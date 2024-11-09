@@ -4,12 +4,12 @@ import { FaFacebook, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import { category } from "../redux/features/home/productSlice";
 import { BsGithub } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
-import { useCategoryProductQuery } from "../redux/features/home/productApi";
 import { useAppDispatch } from "../redux/hooks";
+import { categoryName } from "../utils/headerPathsAndName";
 
 const Footer = () => {
   const dispatch = useAppDispatch();
-  const { data: products } = useCategoryProductQuery(undefined);
+
   return (
     <main className=" bg-black opacity-90  font-titlefont md:px-16 p-6 text-gray-400 tracking-wide py-20">
       <div className="max-w-7xl mx-auto">
@@ -37,6 +37,9 @@ const Footer = () => {
               Home
             </NavLink>
             <NavLink
+              state={{
+                category: "",
+              }}
               to="/product-page"
               className=" flex items-center text-base font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300"
             >
@@ -48,26 +51,17 @@ const Footer = () => {
             >
               Cart
             </NavLink>
-            <NavLink
-              to="product-management"
-              className=" flex items-center text-base font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300"
-            >
-              Product-management
-            </NavLink>
-            <NavLink
-              to="/about-page"
-              className=" flex items-center text-base font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300"
-            >
-              About Us
-            </NavLink>
           </div>
           <div className="mb-5 flex flex-col gap-4 ">
-            <p className="  font-semibold text-white font-serif">Category</p>
+            <p className="  font-semibold text-white font-serif">Products</p>
             <div className=" flex flex-col gap-2">
-              {products?.data?.map((item: any) => (
+              {categoryName.map((item: any) => (
                 <NavLink
-                  onClick={() => dispatch(category(item.category))}
+                  state={{
+                    category: "",
+                  }}
                   to="/product-page"
+                  onClick={() => dispatch(category(item.category))}
                   key={item._id}
                 >
                   <p className=" text-base font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300">

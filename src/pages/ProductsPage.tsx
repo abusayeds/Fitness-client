@@ -242,69 +242,93 @@ const ProductsPage = () => {
           </div>
         </div>
 
-        <div
-          className={`grid  mx-auto justify-center items-center  sm:grid-cols-2  ${
-            categoryOpen
-              ? "md:grid-cols-3 lg:grid-cols-3"
-              : "md:grid-cols-3 lg:grid-cols-4 "
-          }    gap-5  `}
-        >
-          {products?.data?.map((item: TProduct, index: number) => (
+        <div>
+          {products?.data?.length > 0 ? (
             <div
-              className="group w-full h-full border border-gray-300 rounded-sm relative "
-              key={item._id}
+              className={`grid  mx-auto justify-center items-center  sm:grid-cols-2  ${
+                categoryOpen
+                  ? "md:grid-cols-3 lg:grid-cols-3"
+                  : "md:grid-cols-3 lg:grid-cols-4 "
+              }    gap-5  `}
             >
-              <div className="flex justify-center items-center">
-                <img
-                  className="object-cover bg-white h-32"
-                  src={mainImages[index] || item.images[0]}
-                  alt={item.name}
-                />
-              </div>
-              <div className=" grid grid-cols-4  ">
-                {item?.images
-                  ?.slice(0, 4)
-                  ?.map((image: string, thumbIndex: number) => (
+              {products?.data?.map((item: TProduct, index: number) => (
+                <div
+                  className="group w-full h-full border border-gray-300 rounded-sm relative "
+                  key={item._id}
+                >
+                  <div className="flex justify-center items-center">
                     <img
-                      key={thumbIndex}
-                      className={`object-cover bg-white h-12 w-12 cursor-pointer border-2 ${
-                        mainImages[index] === image
-                          ? "border-blue-500"
-                          : "border-transparent"
-                      } hover:border-blue-500`}
-                      src={image}
-                      alt={`Thumbnail ${thumbIndex + 1}`}
-                      onClick={() => handleImageClick(image, index)}
+                      className="object-cover bg-white h-32"
+                      src={mainImages[index] || item.images[0]}
+                      alt={item.name}
                     />
-                  ))}
-              </div>
-              <div className="p-2 md:p-3">
-                <p className="text-slate-700 font-titlefont text-sm my-2">
-                  {item.name}
-                </p>
-                <small className="text-xxl">
-                  Starting at $178/mo or 0% APR with affirm. See if you qualify
-                </small>
-                <br />
-                <small className="text-yellow-700">** / </small>
-                <span className="text-teal-600">
-                  stock: <small className="text-red-600">Available</small>
-                </span>
-                <p>${item.price}</p>
-              </div>
-              <button
-                onClick={() => handleAddToCart(item?._id)}
-                className="  absolute top-1 right-1 bg-gray-200 hover:bg-slate-300 duration-700 p-2 text-3xl  rounded-full"
-              >
-                <IoCartOutline />
-              </button>
-              <p className="opacity-0 invisible group-hover:opacity-100 group-hover:visible duration-700 absolute bg-teal-500 bottom-0 w-full p-1 text-white text-center hover:font-bold hover:bg-teal-700">
-                <NavLink to="/product-details" state={{ productId: item._id }}>
-                  view details
-                </NavLink>
+                  </div>
+                  <div className=" grid grid-cols-4  ">
+                    {item?.images
+                      ?.slice(0, 4)
+                      ?.map((image: string, thumbIndex: number) => (
+                        <img
+                          key={thumbIndex}
+                          className={`object-cover bg-white h-12 w-12 cursor-pointer border-2 ${
+                            mainImages[index] === image
+                              ? "border-blue-500"
+                              : "border-transparent"
+                          } hover:border-blue-500`}
+                          src={image}
+                          alt={`Thumbnail ${thumbIndex + 1}`}
+                          onClick={() => handleImageClick(image, index)}
+                        />
+                      ))}
+                  </div>
+                  <div className="p-2 md:p-3">
+                    <p className="text-slate-700 font-titlefont text-sm my-2">
+                      {item.name}
+                    </p>
+                    <small className="text-xxl">
+                      Starting at $178/mo or 0% APR with affirm. See if you
+                      qualify
+                    </small>
+                    <br />
+                    <small className="text-yellow-700">** / </small>
+                    <span className="text-teal-600">
+                      stock: <small className="text-red-600">Available</small>
+                    </span>
+                    <p>${item.price}</p>
+                  </div>
+                  <button
+                    onClick={() => handleAddToCart(item?._id)}
+                    className="  absolute top-1 right-1 bg-gray-200 hover:bg-slate-300 duration-700 p-2 text-3xl  rounded-full"
+                  >
+                    <IoCartOutline />
+                  </button>
+                  <p className="opacity-0 invisible group-hover:opacity-100 group-hover:visible duration-700 absolute bg-teal-500 bottom-0 w-full p-1 text-white text-center hover:font-bold hover:bg-teal-700">
+                    <NavLink
+                      to="/product-details"
+                      state={{ productId: item._id }}
+                    >
+                      view details
+                    </NavLink>
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className=" text-center  ">
+              <p className="text-5xl text-red-500">Product Not Found ! </p>
+              <p className=" mt-5  text-white">
+                <Link
+                  state={{
+                    category: "",
+                  }}
+                  to="/product-page"
+                  className="bg-designColor w-24  px-2 py-1 "
+                >
+                  {" "}
+                  See All
+                </Link>
               </p>
             </div>
-          ))}
+          )}
         </div>
         {!selectedCategory && (
           <ProductPagenete totalItems={productsLength?.data?.length} />

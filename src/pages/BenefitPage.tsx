@@ -49,73 +49,76 @@ const BenefitPage = () => {
   }, []);
 
   return (
-    <div className="relative flex justify-center items-center h-screen bg-gray-100 overflow-hidden md:my-20 my-10 ">
-      {benefits.map((benefit, index) => (
-        <div
-          key={benefit.id}
-          className={`absolute flex flex-col md:flex-row justify-between items-center w-full h-full transition-opacity duration-500 ease-in-out 
-            ${index === currentIndex ? "opacity-100" : "opacity-0"}`}
-        >
+    <main className="px-4">
+      <p className="py-10 md:text-4xl text-2xl md:text-center font-titlefont">
+        Benefits of a Healthy Lifestyle
+      </p>
+      <div className="relative flex justify-center items-center h-screen bg-gray-100 overflow-hidden  ">
+        {benefits.map((benefit, index) => (
           <div
-            className={`w-full md:w-1/2 h-1/2 md:h-full transform transition-transform duration-[2000ms] 
-              ${
-                index === currentIndex ? "translate-x-0" : "-translate-x-full"
-              }`}
+            key={benefit.id}
+            className={`absolute flex flex-col md:flex-row justify-between items-center w-full h-full transition-opacity duration-500 ease-in-out 
+           ${index === currentIndex ? "opacity-100" : "opacity-0"}`}
           >
-            <img
-              src={benefit.image}
-              alt={`Benefit ${benefit.id}`}
-              className="w-full h-full object-cover"
-            />
-          </div>
-
-          {/* Text */}
-          <div
-            className={`w-full md:w-1/2 h-1/2 md:h-full   flex flex-col items-start justify-center md:gap-8 gap-4   md:p-8 text-xl transform transition-transform duration-[2000ms] 
-              ${index === currentIndex ? "translate-x-0" : "translate-x-full"}`}
-          >
-            <p className="text-gray-800 md:text-4xl text-sm font-bodyfont text-center md:text-left">
-              {benefit.text}
-            </p>
-
-            <div className=" flex flex-col md:gap-4">
-              <li className="flex items-center">
-                <IoIosArrowForward className="  text-designColor font-semibold "></IoIosArrowForward>
-                <p className=" text-xs font-titlefont font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300">
-                  {benefit.subText1}
-                </p>
-              </li>
-              <li className="flex items-center">
-                <IoIosArrowForward className="  text-designColor font-semibold "></IoIosArrowForward>
-                <p className=" text-xs font-titlefont font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300">
-                  {benefit.subText2}
-                </p>
-              </li>
-              <li className="flex items-center">
-                <IoIosArrowForward className="  text-designColor font-semibold "></IoIosArrowForward>
-                <p className=" text-xs font-titlefont font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300">
-                  {benefit.subText3}
-                </p>
-              </li>
-              <li className="flex items-center">
-                <IoIosArrowForward className="  text-designColor font-semibold "></IoIosArrowForward>
-                <p className=" text-xs font-titlefont font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300">
-                  {benefit.subText3}
-                </p>
-              </li>
+            <div
+              className={`w-full md:w-1/2 h-1/2 md:h-full transform transition-transform duration-[2000ms] 
+             ${index === currentIndex ? "translate-x-0" : "-translate-x-full"}`}
+            >
+              <img
+                src={benefit.image}
+                alt={`Benefit ${benefit.id}`}
+                className="w-full h-full object-cover"
+              />
             </div>
 
-            <Link
-              className="  bg-designColor text-white border rounded p-4 opacity-80 hover:opacity-100"
-              to="/product-page"
+            {/* Text */}
+            <div
+              className={`w-full md:w-1/2 h-1/2 md:h-full   flex flex-col items-start justify-center md:gap-8 gap-4   md:p-8 text-xl transform transition-transform duration-[2000ms] 
+             ${index === currentIndex ? "translate-x-0" : "translate-x-full"}`}
             >
-              {" "}
-              Let's Start now
-            </Link>
+              <p className="text-gray-800 md:text-4xl text-sm font-bodyfont text-center md:text-left">
+                {benefit.text}
+              </p>
+
+              <div className=" flex flex-col md:gap-4">
+                <li className="flex items-center">
+                  <IoIosArrowForward className="  text-designColor font-semibold "></IoIosArrowForward>
+                  <p className=" text-xs font-titlefont font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300">
+                    {benefit.subText1}
+                  </p>
+                </li>
+                <li className="flex items-center">
+                  <IoIosArrowForward className="  text-designColor font-semibold "></IoIosArrowForward>
+                  <p className=" text-xs font-titlefont font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300">
+                    {benefit.subText2}
+                  </p>
+                </li>
+                <li className="flex items-center">
+                  <IoIosArrowForward className="  text-designColor font-semibold "></IoIosArrowForward>
+                  <p className=" text-xs font-titlefont font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300">
+                    {benefit.subText3}
+                  </p>
+                </li>
+                <li className="flex items-center">
+                  <IoIosArrowForward className="  text-designColor font-semibold "></IoIosArrowForward>
+                  <p className=" text-xs font-titlefont font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300">
+                    {benefit.subText3}
+                  </p>
+                </li>
+              </div>
+
+              <Link
+                className="  bg-designColor text-white border rounded p-4 opacity-80 hover:opacity-100"
+                to="/product-page"
+              >
+                {" "}
+                Let's Start now
+              </Link>
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </main>
   );
 };
 

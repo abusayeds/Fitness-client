@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useProductLengthQuery } from "../redux/features/productPage/productPageApi";
 import { TProduct } from "../types";
 import HomeCategory from "../ui/HomeCategory";
+import HomePageFreatures from "../ui/HomePageFreatures";
 
 const Homepage = () => {
   const dispatch = useAppDispatch();
@@ -119,10 +120,9 @@ const Homepage = () => {
           All Products ...
         </NavLink>
       </p>
-      <p className="mx-5 md:text-4xl text-center font-titlefont">
-        Benefits of a Healthy Lifestyle
-      </p>
+
       <BenefitPage></BenefitPage>
+      <HomePageFreatures></HomePageFreatures>
     </main>
   );
 };

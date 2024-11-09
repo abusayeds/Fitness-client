@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 const HomeCategory = () => {
   return (
     <section className="  flex flex-col  w-full  px-4  ">
-      <p className="md:text-4xl text-start py-10 font-titlefont">
-        Your Category Product !{" "}
+      <p className="md:text-4xl text-2xl text-start py-10 font-titlefont">
+        Categories by Gym Equipment
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full justify-center items-center">
         {[

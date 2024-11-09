@@ -74,14 +74,14 @@ const MainLayout = () => {
             ></FontAwesomeIcon>
           )}
         </div>
-        <div className="flex gap-3 ">
-          <p className=" font-semibold">Fitness zone</p>
+        <Link to={"/"} className="flex gap-3 ">
+          <p className=" text-lg font-semibold">Fitness zone</p>
           <img
             className="w-6 h-6 rounded-full"
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkooLRLnw6KYliBKMSdCBPO1yyLH-ELhCTuw&s"
             alt=""
           />
-        </div>
+        </Link>
         <div className="md:flex hidden gap-x-4 items-center">
           {categoryName.map((category) => (
             <div
@@ -161,7 +161,7 @@ const MainLayout = () => {
             onClick={() => dispatch(setCartOpen(!cartOpen))}
             className=" flex items-center text-sm font-titlefont relative "
           >
-            <small className=" absolute bottom-3 text-lg right-0">
+            <small className=" absolute bottom-4 text-sm right-0">
               {bookinglength?.data?.length}
             </small>
             <IoCartOutline className=" text-2xl" />

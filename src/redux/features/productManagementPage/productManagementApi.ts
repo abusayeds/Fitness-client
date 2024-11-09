@@ -4,45 +4,41 @@ import { baseApi } from "../../api/baseApi";
 
 const productManagementPageApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    productManagemeb: builder.query({
+    productManagemet: builder.query({
       query: () => ({
         url: "products/all-products",
         method: "GET",
       }),
-    providesTags : ['refatch']
+      providesTags: ["product"],
     }),
     addProduct: builder.mutation({
       query: (addProduct) => ({
         url: "products/create-product",
         method: "POST",
-        body :addProduct
+        body: addProduct,
       }),
-     invalidatesTags: ['refatch']
+      invalidatesTags: ["product"],
+    }),
+    updateProduct: builder.mutation({
+      query: (args) => ({
+        url: `products//update/${args.id}`,
+        method: "PATCH",
+        body: args.data,
+      }),
+      invalidatesTags: ["product"],
     }),
     deleteProduct: builder.mutation({
       query: (id) => ({
         url: `products/${id}`,
         method: "DELETE",
-     
       }),
-     invalidatesTags: ['refatch']
-    }),
-
-    UpdateProduct: builder.mutation({
-      query: (options) => {
-        return {
-          url: `products/${options.id}`,
-          method: "PATCH",
-          body: options.product,
-        };
-      },
-     invalidatesTags: ['refatch']
+      invalidatesTags: ["product"],
     }),
   }),
 });
 export const {
-  useProductManagemebQuery,
-   useAddProductMutation,
+  useProductManagemetQuery,
+  useAddProductMutation,
   useUpdateProductMutation,
-  useDeleteProductMutation
+  useDeleteProductMutation,
 } = productManagementPageApi;

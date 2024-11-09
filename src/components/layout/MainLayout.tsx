@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { categoryName } from "../../utils/headerPathsAndName";
-import { NavLink } from "react-router-dom";
-import { CiSearch } from "react-icons/ci";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IoCartOutline } from "react-icons/io5";
 import { faBars, faX } from "@fortawesome/free-solid-svg-icons";
@@ -11,14 +11,24 @@ import { FaAngleDown, FaAngleUp, FaArrowRight } from "react-icons/fa6";
 
 import CartPage from "../../pages/CartPage";
 import { useCategoryProductQuery } from "../../redux/features/home/productApi";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { setFilter } from "../../redux/features/productPage/producFilterSlice";
+import { logOut } from "../../redux/features/authantication/authanticationSlice";
+import { setCartOpen } from "../../redux/features/cartPage/openCartSlice";
+import { useMyBookingQuery } from "../../redux/features/cartPage/cartPageApi";
 const MainLayout = () => {
-  const [cartOpen, setCartOpen] = useState(false);
+  const { data: bookinglength } = useMyBookingQuery(undefined);
   const [hoveredItem, setHoveredItem] = useState<string | false>(false);
   const [smallDeviceCategoryOpen, setsmallDeviceCategoryOpen] = useState(false);
   const { data: categoryData } = useCategoryProductQuery(hoveredItem || "", {
     skip: !hoveredItem,
   });
+  const navigate = useNavigate();
+  const { user } = useAppSelector((state) => state.UserDetails);
+  console.log();
 
+  const { cartOpen } = useAppSelector((state) => state.openCart);
+  const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
   const [scrolling, setScrolling] = useState(false);
   useEffect(() => {
@@ -36,11 +46,17 @@ const MainLayout = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const handleLogout = () => {
+    dispatch(logOut());
+
+    navigate("/login");
+  };
   return (
     <header
       className={`fixed z-50 top-0  w-full md:px-4 py-1 transition-colors duration-500  ease-linear ${
         scrolling
-          ? "bg-slate-800 text-white "
+          ? "bg-designColor text-white "
           : "bg-white border-b border-black text-black"
       } `}
     >
@@ -72,7 +88,7 @@ const MainLayout = () => {
               key={category.category}
               className="relative"
               onMouseEnter={() => setHoveredItem(category.category)}
-              onMouseLeave={() => setHoveredItem(false)} // Close on mouse leave
+              onMouseLeave={() => setHoveredItem(false)}
             >
               <ul className="md:flex gap-1 hidden items-center text-sm font-titlefont cursor-pointer">
                 <span className="text-sm font-bodyfont">
@@ -85,14 +101,14 @@ const MainLayout = () => {
                 )}
               </ul>
 
-              {hoveredItem === category.category && (
+              {hoveredItem === category?.category && (
                 <div
                   className={`absolute top-full left-0 w-48 py-2 shadow-md rounded-md ${
                     scrolling
-                      ? "bg-slate-800 text-white"
+                      ? "bg-designColor text-white"
                       : "bg-white border-b border-black text-black"
                   } `}
-                  onMouseEnter={() => setHoveredItem(category.category)}
+                  onMouseEnter={() => setHoveredItem(category?.category)}
                   onMouseLeave={() => setHoveredItem(false)}
                 >
                   <div className="flex mt-3 gap-10 justify-around ">
@@ -103,8 +119,22 @@ const MainLayout = () => {
                             <NavLink
                               key={i}
                               to="/product-page"
-                              className="hover:text-designColor duration-500 hover:underline"
-                              state={{ category: category[`category${i + 1}`] }}
+                              onClick={() => {
+                                dispatch(
+                                  setFilter({
+                                    name: "category",
+                                    value: category[`category${i + 1}`],
+                                  })
+                                );
+                                dispatch(
+                                  setFilter({ name: "page", value: "1" })
+                                );
+                              }}
+                              className=" duration-500 hover:underline"
+                              state={{
+                                category: category[`category${i + 1}`],
+                                categorise: category,
+                              }}
                             >
                               <p>{category[`category${i + 1}`]}</p>
                             </NavLink>
@@ -120,19 +150,37 @@ const MainLayout = () => {
         </div>
 
         <div className=" flex items-center md:space-x-5 space-x-2">
-          <ul className=" text-sm font-titlefont">
-            <CiSearch className=" text-3xl" />
+          <ul>
+            {user?.user?.role === "admin" && (
+              <Link to="/dashboard" className=" flex items-center gap-1">
+                <span className=" md:block hidden font-bodyfont">Admin</span>
+              </Link>
+            )}
           </ul>
           <ul
-            onClick={() => setCartOpen(!cartOpen)}
+            onClick={() => dispatch(setCartOpen(!cartOpen))}
             className=" flex items-center text-sm font-titlefont relative "
           >
-            <small className=" absolute bottom-4 text-lg right-0">0</small>
-            <IoCartOutline className=" text-3xl" />
+            <small className=" absolute bottom-3 text-lg right-0">
+              {bookinglength?.data?.length}
+            </small>
+            <IoCartOutline className=" text-2xl" />
           </ul>
           <ul className=" flex items-center text-sm font-titlefont">
-            <span className=" md:block hidden font-bodyfont">Login</span>
-            <CiUser className=" text-3xl" />
+            {!user && (
+              <Link to="/login" className=" flex items-center gap-1">
+                <span className=" md:block hidden font-bodyfont">Login</span>
+                <CiUser className=" text-2xl" />
+              </Link>
+            )}
+            {user && (
+              <button
+                className=" hover:bg-gray-300 p-1 duration-500 w-full "
+                onClick={() => handleLogout()}
+              >
+                logout
+              </button>
+            )}
           </ul>
           <ul className=" md:flex hidden items-center text-sm font-titlefont ">
             <span className="font-bodyfont">Help</span>
@@ -142,7 +190,7 @@ const MainLayout = () => {
       </main>
       {/* small devise */}
       <div
-        className={`md:hidden bg-black absolute h-screen w-screen overflow-auto text-amber-300 z-50 duration-500 flex flex-col items-center ${
+        className={`md:hidden bg-black absolute  h-screen w-screen overflow-auto text-amber-300  z-50 duration-500 flex flex-col items-center ${
           open ? "top-0" : "top-[-1000px]"
         }`}
       >
@@ -152,14 +200,14 @@ const MainLayout = () => {
               key={category.category}
               className="relative w-full border-b pb-2 pt-4"
               onClick={() => {
-                setHoveredItem(category.category);
-                setsmallDeviceCategoryOpen((prev) => !prev);
+                setHoveredItem(category?.category);
+                setsmallDeviceCategoryOpen(!smallDeviceCategoryOpen);
               }}
             >
               <ul className="w-full text-sm font-titlefont cursor-pointer">
                 <div className="flex w-full justify-between">
                   <p className="text-sm font-bodyfont text-center">
-                    {category.category}
+                    {category?.category}
                   </p>
                   {hoveredItem === category.category &&
                   smallDeviceCategoryOpen ? (
@@ -168,7 +216,7 @@ const MainLayout = () => {
                     <FaAngleDown className="text-lg transition-transform duration-700" />
                   )}
                 </div>
-                {hoveredItem === category.category &&
+                {hoveredItem === category?.category &&
                   smallDeviceCategoryOpen && (
                     <div
                       className={`shadow-md rounded-md pl-4 text-white transition-all duration-00 ease-in-out`} // Adjusted duration here
@@ -181,10 +229,22 @@ const MainLayout = () => {
                                 <NavLink
                                   key={i}
                                   to="/product-page"
-                                  onClick={() => setOpen(false)}
-                                  className="hover:text-designColor duration-500 hover:underline"
+                                  onClick={() => {
+                                    dispatch(
+                                      setFilter({
+                                        name: "category",
+                                        value: category[`category${i + 1}`],
+                                      })
+                                    );
+                                    dispatch(
+                                      setFilter({ name: "page", value: "1" })
+                                    );
+                                    setOpen(false);
+                                  }}
+                                  className=" duration-500 hover:underline"
                                   state={{
                                     category: category[`category${i + 1}`],
+                                    categorise: category,
                                   }}
                                 >
                                   <p>{category[`category${i + 1}`]}</p>
@@ -209,15 +269,15 @@ const MainLayout = () => {
       </div>
 
       <div
-        className={`fixed top-20 bg-slate-100 text-black h-screen transition-all duration-500 ease-in-out
+        className={`fixed top-0 bg-slate-100 text-black h-screen transition-all duration-500 ease-in-out md:w-96
             ${cartOpen ? "right-0" : "-right-full"} 
             w-full `}
       >
         <button
-          onClick={() => setCartOpen(false)}
-          className=" px-4 font-bold text-red-600  float-end"
+          onClick={() => dispatch(setCartOpen(!cartOpen))}
+          className=" px-4 mt-6 font-bold text-red-600  float-end"
         >
-          <FaArrowRight className="  font-bold text-lg" />
+          <FaArrowRight className="  font-bold text-2xl" />
         </button>
         <CartPage />
       </div>
@@ -227,7 +287,7 @@ const MainLayout = () => {
           <div key={index}>
             <div>
               <p className="font-bodyfont font-semibold  hover:text-red-500 duration-500">
-                {category.subCategory}
+                {category?.subCategory}
               </p>
             </div>
           </div>

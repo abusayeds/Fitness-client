@@ -6,21 +6,19 @@ const benefits = [
   {
     id: 1,
     image:
-      "https://carolbike.com/wp-content/uploads/2023/04/admin-site.carolbike-min.png",
+      "https://i.ibb.co/JjK5X01/Whats-App-Image-2024-08-06-at-9-47-15-PM.jpg",
     text: " Benefit 2: Improve your efficiency and productivity with this amazing product.",
     subText1:
-      "lorem your efficiency and productivity with this amazing product ",
+      "Are you looking for a general overview of the benefits of fitness ",
     subText2:
-      "lorem your efficiency and productivity with this amazing product ",
-    subText3:
-      "lorem your efficiency and productivity with this amazing product ",
+      "something more specific like benefits for a particular fitness program or feature",
+    subText3: "Let me know how you'd like to proceed! ",
     subText4:
-      "lorem your efficiency and productivity with this amazing product ",
+      "It seems like you're asking for a write-up related to fitness and benefits ",
   },
   {
     id: 2,
-    image:
-      "https://i0.wp.com/smashingfifty.com/wp-content/uploads/2019/08/Joining-a-gym-1.jpg?fit=800%2C533&ssl=1",
+    image: "https://i.ibb.co/JCtT2Qg/3.png",
     text: "Benefit 2: Enhance your experience with cutting-edge features and design.",
     subText1:
       "help to build strong bones, as it is a weight bearing exercise. ",
@@ -30,8 +28,7 @@ const benefits = [
   },
   {
     id: 3,
-    image:
-      "https://mightyfitness.shop/cdn/shop/files/Mighty_Fitness_Trainers_Working_Out.webp?v=1706803189&width=1920",
+    image: "https://i.ibb.co/QPDfDCx/4.jpg",
     text: "Benefit 3: Reliable and efficient performance for daily use.",
     subText1: "Lower risk of heart disease and stroke. ...",
     subText2: "Lower risk of type 2 diabetes or diabetes complications. ...",
@@ -83,25 +80,25 @@ const BenefitPage = () => {
 
             <div className=" flex flex-col md:gap-4">
               <li className="flex items-center">
-                <IoIosArrowForward className=" text-yellow-600 font-semibold "></IoIosArrowForward>
+                <IoIosArrowForward className="  text-designColor font-semibold "></IoIosArrowForward>
                 <p className=" text-xs font-titlefont font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300">
                   {benefit.subText1}
                 </p>
               </li>
               <li className="flex items-center">
-                <IoIosArrowForward className=" text-yellow-600 font-semibold "></IoIosArrowForward>
+                <IoIosArrowForward className="  text-designColor font-semibold "></IoIosArrowForward>
                 <p className=" text-xs font-titlefont font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300">
                   {benefit.subText2}
                 </p>
               </li>
               <li className="flex items-center">
-                <IoIosArrowForward className=" text-yellow-600 font-semibold "></IoIosArrowForward>
+                <IoIosArrowForward className="  text-designColor font-semibold "></IoIosArrowForward>
                 <p className=" text-xs font-titlefont font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300">
                   {benefit.subText3}
                 </p>
               </li>
               <li className="flex items-center">
-                <IoIosArrowForward className=" text-yellow-600 font-semibold "></IoIosArrowForward>
+                <IoIosArrowForward className="  text-designColor font-semibold "></IoIosArrowForward>
                 <p className=" text-xs font-titlefont font-normal text-gray-400 tracking-wide cursor-pointer hover:text-designColor duration-300">
                   {benefit.subText3}
                 </p>
@@ -109,7 +106,7 @@ const BenefitPage = () => {
             </div>
 
             <Link
-              className=" bg-blue-600 text-white border rounded p-4 opacity-80 hover:opacity-100"
+              className="  bg-designColor text-white border rounded p-4 opacity-80 hover:opacity-100"
               to="/product-page"
             >
               {" "}

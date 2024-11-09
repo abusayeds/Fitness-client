@@ -7,26 +7,27 @@ const ProductApi = baseApi.injectEndpoints({
         url: `category/get-category/?mainCategory=${category}`,
         method: "GET",
       }),
-      providesTags: ["refatch"],
+      providesTags: ["product"],
     }),
-    addProducts: builder.mutation({
-      query: (data) => ({
-        url: "products/create-product",
-        method: "POST",
-        body: data,
+    allCategoryProduct: builder.query({
+      query: () => ({
+        url: `category/get-category`,
+        method: "GET",
       }),
+      providesTags: ["product"],
     }),
+
     fewProduct: builder.query({
       query: () => ({
         url: "products/all-products?limit=4",
         method: "GET",
       }),
-      providesTags: ["refatch"],
+      providesTags: ["product"],
     }),
   }),
 });
 export const {
-  useAddProductsMutation,
   useCategoryProductQuery,
   useFewProductQuery,
+  useAllCategoryProductQuery,
 } = ProductApi;

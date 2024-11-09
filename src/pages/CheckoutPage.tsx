@@ -1,121 +1,241 @@
-import  { FormEvent, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { userDetails } from "../redux/features/chechOUtPage/checkOutPageSlice";
-import { NavLink } from "react-router-dom";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// src/components/Checkout.jsx
 
-const UserDetailsForm = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [description, setDescription] = useState("");
-  const products = useAppSelector((state) => state.cartProduct.items);
-  const totalPrice = products.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
- const dispatch = useAppDispatch()
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    const Details = {
-        name :name,
-        email : email,
-        phone : phone,
-        description : description
+import { useForm } from "react-hook-form";
+import { useLocation } from "react-router-dom";
+import { toast } from "sonner";
+import { useCreatePaymentMutation } from "../redux/features/payment/paymentApi";
+
+const Checkout = () => {
+  const location = useLocation();
+  const { reviewCart } = location.state || {};
+  const [addPayment] = useCreatePaymentMutation();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  if (Object.keys(errors).length > 0) {
+    Object.values(errors).forEach((error) => {
+      toast.error((error?.message as any) || "An error occurred");
+    });
+  }
+
+  const onSubmit = async (data: any) => {
+    const bookingData = {
+      ...data,
+      totalItem: reviewCart?.totalItem,
+      totalPrice: reviewCart?.totalPrice,
+    };
+
+    try {
+      const res: any = await addPayment(bookingData);
+      console.log("Form Data:", res);
+      if (res.error) {
+        toast.message(res?.error?.data?.errorSources[0].message);
+      } else {
+        toast.message(" Booking successful!");
+        window.location.href = res?.data?.data?.paymentSession?.payment_url;
+      }
+    } catch {
+      toast.message("Something went wrong");
     }
-     dispatch(userDetails(Details))
-     console.log(Details);
-     
+
+    // Handle form submission (e.g., send data to the backend)
   };
 
   return (
-   <main className="flex mt-40 gap-5  justify-around px-10">
-     <form className="space-y-4 w-full" onSubmit={handleSubmit}>
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Name</label>
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          onChange={(e) => setName(e.target.value)}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none  sm:text-sm"
-          required
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Email</label>
-        <input
-          type="email"
-          name="email"
-          placeholder="email"
-          onChange={(e) => setEmail(e.target.value)}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none  sm:text-sm"
-          required
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Phone</label>
-        <input
-          type="text"
-          name="phone"
-          placeholder="phone"
-          onChange={(e) => setPhone(e.target.value)}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none  sm:text-sm"
-          required
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Address
-        </label>
-        <textarea
-          name="address"
-          placeholder="Address"
-          onChange={(e) => setDescription(e.target.value)}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none  sm:text-sm"
-          required
-        />
-      </div>
-      <NavLink to='/success-page'>
-      <button
-        type="submit"
-        className="w-full mt-5 bg-indigo-600 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-      >
-       Place Order
-      </button>
-      </NavLink>
-    </form>
-    <div className="w-full ">
-    <div>
-        {products.map((item) => (
-          <div
-            key={item._id}
-            className="md:flex justify-between items-center border px-20 rounded   gap-5 mt-5 "
-          >
-            <div>
-              <img className="h-24 w-24" src={item.images} alt="" />
-            </div>
-            <div className="mt-2 w-60 ">
-              <p className=" font-semibold text-slate-700"> {item.name}</p>
-              <p className="mt-2">$ {item.price}</p>
-              <p className="mt-2">Stock: {item.stock}</p>
-
-            </div>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col mt-20 lg:flex-row bg-gray-50 min-h-screen p-8"
+    >
+      {/* Shipping Information */}
+      <div className="lg:w-2/3 p-8 bg-white rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold mb-6">Checkout</h2>
+        <div className="space-y-4">
+          {/* Delivery / Pick up options */}
+          <div className="flex space-x-4">
+            <label className="flex items-center space-x-2">
+              <input
+                type="radio"
+                value="Delivery"
+                {...register("deliveryOption", {
+                  required: "Please select a delivery option",
+                })}
+                className="text-blue-600"
+              />
+              <span>Delivery</span>
+            </label>
+            <label className="flex items-center space-x-2">
+              <input
+                type="radio"
+                value="Pick up"
+                {...register("deliveryOption", {
+                  required: "Please select a delivery option",
+                })}
+                className="text-blue-600"
+              />
+              <span>Pick up</span>
+            </label>
           </div>
-        ))}
+          {errors.deliveryOption && (
+            <p className="text-red-500 text-sm">
+              {errors.deliveryOption.message as any}
+            </p>
+          )}
 
-        <div className="flex justify-between items-center mt-5">
-          <div  className="flex items-center gap-5">
-          <p className=" text-xl font-semibold text-slate-700">Total Price: </p>
-          <p>{totalPrice.toFixed(2)} $</p>
-       
+          {/* Full Name */}
+          <input
+            type="text"
+            placeholder="Full name"
+            {...register("fullName", { required: "Full name is required" })}
+            className="w-full border rounded-lg p-2"
+          />
+          {errors.fullName && (
+            <p className="text-red-500 text-sm">
+              {errors.fullName.message as any}
+            </p>
+          )}
+
+          {/* Email Address */}
+          <input
+            type="email"
+            placeholder="Email address"
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+                message: "Enter a valid email address",
+              },
+            })}
+            className="w-full border rounded-lg p-2"
+          />
+          {errors.email && (
+            <p className="text-red-500 text-sm">
+              {errors.email.message as any}
+            </p>
+          )}
+
+          {/* Phone Number */}
+          <input
+            type="tel"
+            placeholder="Phone number"
+            {...register("phoneNumber", {
+              required: "Phone number is required",
+              pattern: {
+                value: /^(?:\+8801|01)[3-9]\d{8}$/,
+                message: "Enter a valid Bangladeshi phone number",
+              },
+            })}
+            className="w-full border rounded-lg p-2"
+          />
+
+          {errors.phoneNumber && (
+            <p className="text-red-500 text-sm">
+              {errors?.phoneNumber?.message as any}
+            </p>
+          )}
+
+          {/* Country */}
+          <input
+            type="tel"
+            placeholder="Enter address"
+            {...register("address", {
+              required: "adddress is required",
+            })}
+            className="w-full border rounded-lg p-2"
+          />
+          {errors?.address && (
+            <p className="text-red-500 text-sm">
+              {errors?.address?.message as any}
+            </p>
+          )}
+
+          {/* City, State, and ZIP Code */}
+          <div className="flex space-x-4">
+            <input
+              type="text"
+              placeholder="City"
+              {...register("city", { required: "City is required" })}
+              className="w-1/3 border rounded-lg p-2"
+            />
+            {errors.city && (
+              <p className="text-red-500 text-sm">
+                {errors?.city?.message as any}
+              </p>
+            )}
+
+            <input
+              type="text"
+              placeholder="State"
+              {...register("state", { required: "State is required" })}
+              className="w-1/3 border rounded-lg p-2"
+            />
+            {errors.state && (
+              <p className="text-red-500 text-sm">
+                {errors.state.message as any}
+              </p>
+            )}
           </div>
 
-          
+          {/* Terms and Conditions */}
+          <div className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              {...register("terms", {
+                required: "You must agree to the terms and conditions",
+              })}
+              className="text-blue-600"
+            />
+            <label htmlFor="terms" className="text-sm">
+              I have read and agree to the Terms and Conditions
+            </label>
+          </div>
+          {errors.terms && (
+            <p className="text-red-500 text-sm">
+              {errors.terms.message as any}
+            </p>
+          )}
         </div>
       </div>
-    </div>
-   </main>
+
+      {/* Review Your Cart */}
+      <div className="lg:w-1/3 p-8 bg-gray-100 rounded-lg shadow-md mt-8 lg:mt-0 lg:ml-8">
+        <h2 className="text-xl font-semibold mb-4">Review your cart</h2>
+        <div className="space-y-2">
+          {/* Sample Cart Items */}
+          <div className="flex items-center justify-between">
+            <span>Total items :</span>
+            <span> {reviewCart?.totalItem}</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span>Discount</span>
+            <span>$0.00</span>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between mt-4">
+          <span>Subtotal</span>
+          <span>${reviewCart?.totalPrice}.00</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span>Shipping</span>
+          <span>$80.00</span>
+        </div>
+        <div className="flex items-center justify-between font-semibold">
+          <span>Total</span>
+          <span>${reviewCart?.totalPrice + 80}.00</span>
+        </div>
+        <button className="w-full mt-6 p-3 bg-blue-600 text-white rounded-lg font-semibold">
+          Pay Now
+        </button>
+        <p className="text-sm text-gray-500 mt-4">
+          Secure Checkout – 128-bit Encrypted
+        </p>
+      </div>
+    </form>
   );
 };
 
-export default UserDetailsForm;
+export default Checkout;

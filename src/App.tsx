@@ -4,9 +4,9 @@ import Footer from "./pages/Footer";
 
 function App() {
   return (
-    <div >
+    <div>
       <MainLayout></MainLayout>
-      <div >
+      <div>
         <Outlet></Outlet>
       </div>
       <Footer></Footer>

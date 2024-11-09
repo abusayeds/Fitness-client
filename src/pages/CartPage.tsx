@@ -1,143 +1,141 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useEffect } from "react";
-import { useAppSelector, useAppDispatch } from "../redux/hooks";
-import {
-  decrementQuantity,
-  incrementQuantity,
-  removeProduct,
-} from "../redux/features/cartPage/cartpageSlice";
-import { Link, NavLink } from "react-router-dom";
+import Cart from "../ui/Cart";
+import { useMyBookingQuery } from "../redux/features/cartPage/cartPageApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBagShopping } from "@fortawesome/free-solid-svg-icons";
+import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../redux/hooks";
+import { setCartOpen } from "../redux/features/cartPage/openCartSlice";
+import { toast } from "sonner";
 
 const CartPage = () => {
+  const { data: myCart } = useMyBookingQuery(undefined);
+  const items = myCart?.data;
+  const totalItem = myCart?.data?.length;
+  const discountTarget = 10;
+  const percentage = Math.min((totalItem / discountTarget) * 100, 100);
   const dispatch = useAppDispatch();
-  const products = useAppSelector((state) => state.cartProduct.items);
-
-  const handleIncrement = (id: any) => {
-    dispatch(incrementQuantity(id));
-  };
-
-  const handleDecrement = (id: any) => {
-    dispatch(decrementQuantity(id));
-  };
-
-  const handleRemove = (id: any) => {
-    if (
-      window.confirm(
-        "Are you sure you want to remove this product from the cart?"
-      )
-    ) {
-      dispatch(removeProduct(id));
-    }
-  };
-
-  const totalPrice = products.reduce(
-    (total, item) => total + item.price * item.quantity,
+  const totalPrice = items?.reduce(
+    (acc: any, item: any) => acc + item?.price * item?.quantity,
     0
   );
-
-  useEffect(() => {
-    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      if (products.length > 0) {
-        event.preventDefault();
-        event.returnValue = "";
-      }
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, [products]);
-  const isCheckoutDisabled = products.some((item) => item.stock === 0);
-
+  const navigate = useNavigate();
+  let reviewTotal = totalPrice;
+  if (percentage === 100) {
+    reviewTotal = totalPrice - totalPrice * 0.1;
+  }
+  const reviewCart = {
+    totalItem,
+    totalPrice: reviewTotal,
+  };
+  const handleCheckOut = (reviewCart: any, cartLength: any) => {
+    if (cartLength <= 0) {
+      toast.message("Your cart is empty. please select item ");
+    } else {
+      navigate("/checkout-page", { state: { reviewCart } });
+      dispatch(setCartOpen(false));
+    }
+  };
   return (
-    <div className="mt-40 flex justify-center ">
-      <div>
-        {products.map((item) => (
+    <div className="pt-2">
+      <div className="p-4 max-w-md mx-auto  bg-gray-10 rounded-lg shadow-lg">
+        <h2 className="text-lg font-bold mb-4">
+          Total item {myCart?.data.length}
+        </h2>
+
+        {/* Free Shipping Progress */}
+        <div className="p-4 bg-white rounded-lg mb-4">
+          {percentage === 100 ? (
+            <p>
+              Congratulations !
+              <span className="font-bold text-1xl">
+                {" "}
+                You got a 10% discount!{" "}
+              </span>
+            </p>
+          ) : (
+            <p className="text-sm font-medium">
+              Buy
+              <span className="text-red-500 ml-1">
+                {discountTarget - totalItem}
+              </span>{" "}
+              or more to get
+              <span className="font-bold text-1xl"> 10% discount ! </span>
+            </p>
+          )}
+
           <div
-            key={item._id}
-            className="md:flex justify-between border px-20 rounded   gap-5 mt-5 "
+            className=" bg-red-500 rounded-full h-3  text-end  text-white text-[10px] pr-1"
+            style={{ width: `${percentage}%` }}
           >
-            <div>
-              <img className="h-52" src={item.images} alt="" />
-            </div>
-            <div className="mt-5 w-80">
-              <p className=" font-semibold text-slate-700"> {item.name}</p>
-              <p className="mt-5">$ {item.price}</p>
-              <p className="mt-5">Stock: {item.stock}</p>
-
-              <div className="flex gap-6 mt-5">
-                <div className="flex justify-between  w-24 px-2  border ">
-                  <button
-                    onClick={() => handleIncrement(item._id)}
-                    disabled={item.quantity >= item.stock}
-                  >
-                    +
-                  </button>
-                  <p>{item.quantity}</p>
-                  <button
-                    onClick={() => handleDecrement(item._id)}
-                    disabled={item.quantity <= 1}
-                  >
-                    -
-                  </button>
-                </div>
-                <small
-                  className=" hover:font-semibold"
-                  onClick={() => handleRemove(item._id)}
-                >
-                  Remove
-                  <hr className=" font-bold text-black" />
-                </small>
-              </div>
-            </div>
+            {Math.round(percentage)}%
           </div>
-        ))}
+        </div>
 
-        {products.length ? (
-          <div className="flex justify-between items-center mt-5">
-            <div className="flex items-center gap-5">
-              <p className=" text-xl font-semibold text-slate-700">
-                Total Price:{" "}
-              </p>
-              <p>{totalPrice.toFixed(2)} $</p>
-            </div>
+        <div className="space-y-4 h-[250px]  overflow-scroll  ">
+          {myCart?.data.length > 0 ? (
+            <>
+              {myCart?.data?.map((product: any, index: any) => (
+                <Cart key={index} product={product} />
+              ))}
+            </>
+          ) : (
+            <>
+              <div className="flex items-center justify-center h-52">
+                <div>
+                  <div className="flex items-center justify-center ">
+                    <p className="text-4xl bg-teal-100 text-designColor rounded-full px-6 py-5">
+                      <FontAwesomeIcon icon={faBagShopping}></FontAwesomeIcon>
+                    </p>
+                  </div>
+                  <div className="text-center md:w-5/6 m-auto">
+                    <p className="text-2xl md:font-semibold">
+                      Opps !!! Your cart is empty
+                    </p>
+                    <p>
+                      No items added in your cart. Please add product to your
+                      cart list.{" "}
+                      <Link
+                        onClick={() => dispatch(setCartOpen(false))}
+                        to="/product-page"
+                        className="text-designColor"
+                      >
+                        {" "}
+                        Go Back
+                      </Link>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
 
-            <button
-              className=" bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-              onClick={() => console.log("Proceeding to checkout")}
-              disabled={isCheckoutDisabled}
-            >
-              <NavLink to="/checkout-page"> Proceed to Checkout</NavLink>
+        {/* Subtotal and Buttons */}
+        <div className="mt-4">
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-lg font-medium">Subtotal:</span>
+            {percentage === 100 ? (
+              <span className="text-lg font-bold">
+                ${totalPrice - totalPrice * 0.1}{" "}
+                <small className="line-through text-gray-500">
+                  ${totalPrice}
+                </small>
+              </span>
+            ) : (
+              <span className="text-lg font-bold">${totalPrice}</span>
+            )}
+          </div>
+          <div
+            onClick={() => handleCheckOut(reviewCart, myCart?.data?.length)}
+            className="flex space-x-4"
+          >
+            <button className="flex-1 py-2 bg-designColor text-white rounded-lg">
+              Check Out
             </button>
           </div>
-        ) : (
-          <div className="flex items-center justify-center h-52">
-            <div>
-              <div className="flex items-center justify-center ">
-                <p className="text-4xl bg-blue-200 text-blue-500 rounded-full px-6 py-5">
-                  <FontAwesomeIcon icon={faBagShopping}></FontAwesomeIcon>
-                </p>
-              </div>
-              <div className="text-center md:w-5/6 m-auto">
-                <p className="text-2xl md:font-semibold">
-                  Opps !!! Your cart is empty
-                </p>
-                <p>
-                  No items added in your cart. Please add product to your cart
-                  list.{" "}
-                  <Link to="/" className="text-blue-500">
-                    {" "}
-                    Back to Home
-                  </Link>
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );

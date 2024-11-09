@@ -1,4 +1,4 @@
-import { createSlice} from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 interface TUserDetails {
   name: string;
@@ -20,7 +20,7 @@ const productSlice = createSlice({
   initialState,
   reducers: {
     userDetails: (state, action) => {
-      state.userData.push({...action.payload})
+      state.userData.push({ ...action.payload });
     },
   },
 });
